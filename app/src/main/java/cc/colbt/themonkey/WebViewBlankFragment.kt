@@ -1,9 +1,12 @@
 package cc.colbt.themonkey
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.ConsoleMessage
+import android.webkit.WebChromeClient
 import android.webkit.WebView
 import androidx.fragment.app.Fragment
 import androidx.webkit.WebViewAssetLoader
@@ -41,12 +44,23 @@ class WebViewBlankFragment : Fragment() {
 
         val myWebView: WebView = view.findViewById(R.id.thewebview)
         val assetLoader = WebViewAssetLoader.Builder()
+            .setDomain("colbt.cc")
+            .setHttpAllowed(true)
             .addPathHandler("/assets/", WebViewAssetLoader.AssetsPathHandler(requireActivity()))
             .addPathHandler("/res/", WebViewAssetLoader.ResourcesPathHandler(requireActivity()))
             .build()
         myWebView.webViewClient = LocalContentWebViewClient(assetLoader)
         myWebView.settings.javaScriptEnabled = true
-        myWebView.loadUrl("https://www.example.com")
+        myWebView.webChromeClient = object : WebChromeClient() {
+
+            override fun onConsoleMessage(message: ConsoleMessage): Boolean {
+                Log.d("MyApplication", "${message.message()} -- From line " +
+                        "${message.lineNumber()} of ${message.sourceId()}")
+                return true
+            }
+        }
+
+        myWebView.loadUrl("http://colbt.cc/assets/localweb/build/index.html")
 
         return view
     }
