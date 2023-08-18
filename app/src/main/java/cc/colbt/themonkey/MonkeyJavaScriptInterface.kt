@@ -11,4 +11,8 @@ class MonkeyJavaScriptInterface(activity: Activity?) {
     fun showToast(toast: String?) {
         Toast.makeText(activity, toast, Toast.LENGTH_SHORT).show()
     }
+    
+    fun storeStat(state: String?){
+        
+    }
 }

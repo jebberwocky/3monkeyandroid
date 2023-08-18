@@ -12,6 +12,7 @@ import android.webkit.WebChromeClient
 import android.webkit.WebView
 import androidx.fragment.app.Fragment
 import androidx.webkit.WebViewAssetLoader
+import cc.colbt.themonkey.util.Const
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -64,7 +65,8 @@ class WebViewBlankFragment : Fragment() {
 
         myWebView.loadUrl("http://colbt.cc/assets/localweb/build/index.html")
 
-        myWebView.addJavascriptInterface(MonkeyJavaScriptInterface(requireActivity()),"AndroidNative")
+        myWebView.addJavascriptInterface(MonkeyJavaScriptInterface(requireActivity()),
+            Const.AndroidJsObjNameSpace)
 
         return view
     }
