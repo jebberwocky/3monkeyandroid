@@ -1,5 +1,7 @@
 package cc.colbt.themonkey
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -52,15 +54,17 @@ class WebViewBlankFragment : Fragment() {
         myWebView.webViewClient = LocalContentWebViewClient(assetLoader)
         myWebView.settings.javaScriptEnabled = true
         myWebView.webChromeClient = object : WebChromeClient() {
-
             override fun onConsoleMessage(message: ConsoleMessage): Boolean {
                 Log.d("MyApplication", "${message.message()} -- From line " +
                         "${message.lineNumber()} of ${message.sourceId()}")
                 return true
             }
+
         }
 
         myWebView.loadUrl("http://colbt.cc/assets/localweb/build/index.html")
+
+        myWebView.addJavascriptInterface(MonkeyJavaScriptInterface(requireActivity()),"AndroidNative")
 
         return view
     }
