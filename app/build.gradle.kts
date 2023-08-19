@@ -38,6 +38,7 @@ android {
 dependencies {
     implementation("io.branch.sdk.android:library:5.+")
     implementation("com.mixpanel.android:mixpanel-android:7.+")
+    implementation("com.google.code.gson:gson:2.8.5")
     //
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
