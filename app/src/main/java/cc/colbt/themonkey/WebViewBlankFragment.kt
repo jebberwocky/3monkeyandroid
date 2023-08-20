@@ -1,7 +1,5 @@
 package cc.colbt.themonkey
 
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,6 +11,7 @@ import android.webkit.WebView
 import androidx.fragment.app.Fragment
 import androidx.webkit.WebViewAssetLoader
 import cc.colbt.themonkey.util.Const
+import cc.colbt.themonkey.util.DeviceUuidFactory
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -56,14 +55,18 @@ class WebViewBlankFragment : Fragment() {
         myWebView.settings.javaScriptEnabled = true
         myWebView.webChromeClient = object : WebChromeClient() {
             override fun onConsoleMessage(message: ConsoleMessage): Boolean {
-                Log.d("MyApplication", "${message.message()} -- From line " +
+                Log.d(Const.LogTag, "${message.message()} -- From line " +
                         "${message.lineNumber()} of ${message.sourceId()}")
                 return true
             }
 
         }
-
-        myWebView.loadUrl("http://colbt.cc/assets/localweb/build/index.html")
+        var dk = DeviceUuidFactory.GetUUID(requireActivity()).toString();
+        var url = "http://colbt.cc/assets/localweb/build/index.html"
+        if(dk !=null && dk.isNotEmpty()){
+            url += "?dk=$dk"
+        }
+        myWebView.loadUrl(url)
 
         myWebView.addJavascriptInterface(MonkeyJavaScriptInterface(requireActivity()),
             Const.AndroidJsObjNameSpace)
