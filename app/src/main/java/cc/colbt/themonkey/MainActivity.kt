@@ -5,9 +5,11 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import cc.colbt.themonkey.util.Const
+import cc.colbt.themonkey.util.DeviceUuidFactory
 import com.mixpanel.android.mpmetrics.MixpanelAPI
 import io.branch.referral.Branch
 import org.json.JSONException
+import org.json.JSONObject
 
 private lateinit var webFragment: WebViewBlankFragment
 
@@ -25,8 +27,13 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
+        var dk = DeviceUuidFactory.GetUUID(this).toString();
         var mp = MixpanelAPI.getInstance(this, Const.MixPanel.Key, false)
-        mp.track(Const.MixPanel.EventActivityStarted)
+        val props = JSONObject()
+        props.put("dk", dk)
+        mp.track(Const.MixPanel.EventActivityStarted, props)
+
+        Branch.getInstance().setRequestMetadata("dk", dk);
         Branch.sessionBuilder(this).withCallback { referringParams, error ->
             if (error == null) {
                 if (referringParams != null) {
